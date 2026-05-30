@@ -1,13 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.WcfService", "Lab1.WcfService\Lab1.WcfService.csproj", "{08732B85-CBDA-4F09-A1A6-BA8B92808E59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.ConsoleClient", "Lab1.ConsoleClient\Lab1.ConsoleClient.csproj", "{F334E1FF-922D-4F69-B048-6E96F5F44414}"
 	ProjectSection(ProjectDependencies) = postProject
 		{08732B85-CBDA-4F09-A1A6-BA8B92808E59} = {08732B85-CBDA-4F09-A1A6-BA8B92808E59}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2.CurrencyService", "Lab2.CurrencyService\Lab2.CurrencyService.csproj", "{D86EA7CC-DDA4-40AB-A349-33C9F92BE51A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2.ConsoleClient", "Lab2.ConsoleClient\Lab2.ConsoleClient.csproj", "{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D86EA7CC-DDA4-40AB-A349-33C9F92BE51A} = {D86EA7CC-DDA4-40AB-A349-33C9F92BE51A}
 	EndProjectSection
 EndProject
 Global
@@ -24,6 +31,14 @@ Global
 		{F334E1FF-922D-4F69-B048-6E96F5F44414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F334E1FF-922D-4F69-B048-6E96F5F44414}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F334E1FF-922D-4F69-B048-6E96F5F44414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86EA7CC-DDA4-40AB-A349-33C9F92BE51A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86EA7CC-DDA4-40AB-A349-33C9F92BE51A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86EA7CC-DDA4-40AB-A349-33C9F92BE51A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86EA7CC-DDA4-40AB-A349-33C9F92BE51A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

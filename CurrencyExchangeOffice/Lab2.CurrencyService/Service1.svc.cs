@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Web.Script.Serialization;
 
 namespace Lab2.CurrencyService
 {
@@ -13,8 +14,18 @@ namespace Lab2.CurrencyService
 
                 using (WebClient client = new WebClient())
                 {
-                    string response = client.DownloadString(url);
-                    return response;
+                    client.Encoding = System.Text.Encoding.UTF8;
+                    string json = client.DownloadString(url);
+
+                    var serializer = new JavaScriptSerializer();
+                    dynamic data = serializer.DeserializeObject(json);
+
+                    string currency = data["currency"];
+                    string code = data["code"];
+                    decimal rate = data["rates"][0]["mid"];
+                    string date = data["rates"][0]["effectiveDate"];
+
+                    return $"Currency: {currency} ({code})\nRate: {rate} PLN\nDate: {date}";
                 }
             }
             catch (Exception ex)
