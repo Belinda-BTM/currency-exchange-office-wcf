@@ -53,5 +53,38 @@ namespace Lab2.CurrencyService
 
             return result.ToString();
         }
+        public string GetAvailableCurrencies()
+        {
+            try
+            {
+                string url = "http://api.nbp.pl/api/exchangerates/tables/A/?format=json";
+
+                using (WebClient client = new WebClient())
+                {
+                    client.Encoding = Encoding.UTF8;
+                    string json = client.DownloadString(url);
+
+                    var serializer = new JavaScriptSerializer();
+                    dynamic data = serializer.DeserializeObject(json);
+
+                    StringBuilder result = new StringBuilder();
+                    result.AppendLine("Available currencies:");
+                    result.AppendLine("====================");
+
+                    var rates = data[0]["rates"];
+                    foreach (var rate in rates)
+                    {
+                        result.AppendLine($"{rate["code"]} - {rate["currency"]}");
+                    }
+
+                    return result.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+        }
     }
+
 }

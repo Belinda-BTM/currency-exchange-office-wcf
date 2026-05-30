@@ -18,6 +18,12 @@
   <wsdl:message name="IService1_GetMultipleRates_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetMultipleRatesResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_GetAvailableCurrencies_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableCurrencies" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetAvailableCurrencies_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableCurrenciesResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="GetExchangeRate">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetExchangeRate" message="tns:IService1_GetExchangeRate_InputMessage" />
@@ -26,6 +32,10 @@
     <wsdl:operation name="GetMultipleRates">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetMultipleRates" message="tns:IService1_GetMultipleRates_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetMultipleRatesResponse" message="tns:IService1_GetMultipleRates_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableCurrencies">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetAvailableCurrencies" message="tns:IService1_GetAvailableCurrencies_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetAvailableCurrenciesResponse" message="tns:IService1_GetAvailableCurrencies_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -41,6 +51,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetMultipleRates">
       <soap:operation soapAction="http://tempuri.org/IService1/GetMultipleRates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableCurrencies">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetAvailableCurrencies" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

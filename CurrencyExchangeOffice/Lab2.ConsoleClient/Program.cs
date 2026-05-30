@@ -15,10 +15,13 @@ namespace Lab2.ConsoleClient
 
             Console.WriteLine("=== Multiple Currency Rates ===");
             Console.WriteLine(client.GetMultipleRates("USD,EUR,GBP,CHF"));
-            Console.WriteLine();
 
             Console.WriteLine("=== Invalid Currency Test ===");
             Console.WriteLine(client.GetExchangeRate("XYZ"));
+            Console.WriteLine();
+
+            Console.WriteLine("=== All Available Currencies ===");
+            Console.WriteLine(client.GetAvailableCurrencies());
 
             client.Close();
             Console.ReadLine();

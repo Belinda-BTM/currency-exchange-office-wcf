@@ -26,6 +26,12 @@ namespace Lab2.ConsoleClient.CurrencyServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetMultipleRates", ReplyAction="http://tempuri.org/IService1/GetMultipleRatesResponse")]
         System.Threading.Tasks.Task<string> GetMultipleRatesAsync(string currencyCodes);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAvailableCurrencies", ReplyAction="http://tempuri.org/IService1/GetAvailableCurrenciesResponse")]
+        string GetAvailableCurrencies();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAvailableCurrencies", ReplyAction="http://tempuri.org/IService1/GetAvailableCurrenciesResponse")]
+        System.Threading.Tasks.Task<string> GetAvailableCurrenciesAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -69,6 +75,14 @@ namespace Lab2.ConsoleClient.CurrencyServiceReference {
         
         public System.Threading.Tasks.Task<string> GetMultipleRatesAsync(string currencyCodes) {
             return base.Channel.GetMultipleRatesAsync(currencyCodes);
+        }
+        
+        public string GetAvailableCurrencies() {
+            return base.Channel.GetAvailableCurrencies();
+        }
+        
+        public System.Threading.Tasks.Task<string> GetAvailableCurrenciesAsync() {
+            return base.Channel.GetAvailableCurrenciesAsync();
         }
     }
 }

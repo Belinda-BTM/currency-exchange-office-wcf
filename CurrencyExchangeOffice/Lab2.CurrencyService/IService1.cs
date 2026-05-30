@@ -10,5 +10,8 @@ namespace Lab2.CurrencyService
 
         [OperationContract]
         string GetMultipleRates(string currencyCodes);
+
+        [OperationContract]
+        string GetAvailableCurrencies();
     }
 }
