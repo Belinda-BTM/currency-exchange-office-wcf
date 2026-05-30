@@ -9,12 +9,16 @@ namespace Lab2.ConsoleClient
         {
             Service1Client client = new Service1Client();
 
-            Console.WriteLine("=== Currency Exchange Rate Service ===");
+            Console.WriteLine("=== Single Currency Rate ===");
             Console.WriteLine(client.GetExchangeRate("USD"));
             Console.WriteLine();
-            Console.WriteLine(client.GetExchangeRate("EUR"));
+
+            Console.WriteLine("=== Multiple Currency Rates ===");
+            Console.WriteLine(client.GetMultipleRates("USD,EUR,GBP,CHF"));
             Console.WriteLine();
-            Console.WriteLine(client.GetExchangeRate("GBP"));
+
+            Console.WriteLine("=== Invalid Currency Test ===");
+            Console.WriteLine(client.GetExchangeRate("XYZ"));
 
             client.Close();
             Console.ReadLine();

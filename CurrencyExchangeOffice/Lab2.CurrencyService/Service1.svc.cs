@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using System.Web.Script.Serialization;
 
 namespace Lab2.CurrencyService
@@ -14,7 +15,7 @@ namespace Lab2.CurrencyService
 
                 using (WebClient client = new WebClient())
                 {
-                    client.Encoding = System.Text.Encoding.UTF8;
+                    client.Encoding = Encoding.UTF8;
                     string json = client.DownloadString(url);
 
                     var serializer = new JavaScriptSerializer();
@@ -28,10 +29,29 @@ namespace Lab2.CurrencyService
                     return $"Currency: {currency} ({code})\nRate: {rate} PLN\nDate: {date}";
                 }
             }
+            catch (WebException)
+            {
+                return $"Error: '{currencyCode}' is not a valid currency code. Please use codes like USD, EUR, GBP.";
+            }
             catch (Exception ex)
             {
                 return "Error: " + ex.Message;
             }
+        }
+
+        public string GetMultipleRates(string currencyCodes)
+        {
+            string[] codes = currencyCodes.Split(',');
+            StringBuilder result = new StringBuilder();
+
+            foreach (string code in codes)
+            {
+                string trimmed = code.Trim().ToUpper();
+                result.AppendLine(GetExchangeRate(trimmed));
+                result.AppendLine("---");
+            }
+
+            return result.ToString();
         }
     }
 }
