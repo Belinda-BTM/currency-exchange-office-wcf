@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
@@ -8,14 +10,11 @@ namespace ExchangeOffice
 {
     public class Service1 : IService1
     {
-        private static Dictionary<string, string> users = new Dictionary<string, string>();
-        private static Dictionary<string, decimal> balances = new Dictionary<string, decimal>();
-        private static Dictionary<string, Dictionary<string, decimal>> holdings = new Dictionary<string, Dictionary<string, decimal>>();
+        private string connectionString = ConfigurationManager.ConnectionStrings["ExchangeOfficeDB"].ConnectionString;
 
         private decimal GetRateFromNBP(string currencyCode)
         {
-            if (currencyCode.ToUpper() == "PLN")
-                return 1.0m;
+            if (currencyCode.ToUpper() == "PLN") return 1.0m;
             string url = $"http://api.nbp.pl/api/exchangerates/rates/A/{currencyCode}/?format=json";
             using (WebClient client = new WebClient())
             {
@@ -87,76 +86,180 @@ namespace ExchangeOffice
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return "Error: Username and password cannot be empty.";
-            if (users.ContainsKey(username))
-                return $"Error: Username '{username}' is already taken.";
-            users[username] = password;
-            balances[username] = 0;
-            holdings[username] = new Dictionary<string, decimal>();
-            return $"Success: User '{username}' registered successfully!";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string check = "SELECT COUNT(*) FROM Users WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(check, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        if ((int)cmd.ExecuteScalar() > 0)
+                            return $"Error: Username '{username}' is already taken.";
+                    }
+                    string insert = "INSERT INTO Users (Username, Password, Balance) VALUES (@u, @p, 0)";
+                    using (SqlCommand cmd = new SqlCommand(insert, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.Parameters.AddWithValue("@p", password);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return $"Success: User '{username}' registered successfully!";
+            }
+            catch (Exception ex) { return "Error: " + ex.Message; }
         }
 
         public string LoginUser(string username, string password)
         {
-            if (!users.ContainsKey(username)) return "Error: User not found.";
-            if (users[username] != password) return "Error: Incorrect password.";
-            return $"Success: Welcome back, {username}!";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM Users WHERE Username=@u AND Password=@p";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.Parameters.AddWithValue("@p", password);
+                        if ((int)cmd.ExecuteScalar() > 0)
+                            return $"Success: Welcome back, {username}!";
+                    }
+                }
+                return "Error: Invalid username or password.";
+            }
+            catch (Exception ex) { return "Error: " + ex.Message; }
         }
 
         public string GetBalance(string username)
         {
-            if (!users.ContainsKey(username)) return "Error: User not found.";
-            StringBuilder result = new StringBuilder();
-            result.AppendLine($"PLN Balance: {balances[username]:F2} PLN");
-            if (holdings[username].Count > 0)
+            try
             {
-                result.AppendLine("Currency Holdings:");
-                foreach (var holding in holdings[username])
-                    result.AppendLine($"  {holding.Key}: {holding.Value:F2}");
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Balance FROM Users WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        object result = cmd.ExecuteScalar();
+                        if (result == null) return "Error: User not found.";
+                        decimal balance = (decimal)result;
+                        return $"PLN Balance: {balance:F2} PLN";
+                    }
+                }
             }
-            return result.ToString();
+            catch (Exception ex) { return "Error: " + ex.Message; }
         }
 
         public string TopUpAccount(string username, decimal amount)
         {
-            if (!users.ContainsKey(username)) return "Error: User not found.";
             if (amount <= 0) return "Error: Amount must be greater than zero.";
-            balances[username] += amount;
-            return $"Success: Added {amount:F2} PLN. New balance: {balances[username]:F2} PLN";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE Users SET Balance = Balance + @a WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@a", amount);
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.ExecuteNonQuery();
+                    }
+                    string getBalance = "SELECT Balance FROM Users WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(getBalance, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        decimal newBalance = (decimal)cmd.ExecuteScalar();
+                        return $"Success: Added {amount:F2} PLN. New balance: {newBalance:F2} PLN";
+                    }
+                }
+            }
+            catch (Exception ex) { return "Error: " + ex.Message; }
         }
 
         public string BuyCurrency(string username, string currencyCode, decimal amount)
         {
-            if (!users.ContainsKey(username)) return "Error: User not found.";
             try
             {
                 decimal rate = GetRateFromNBP(currencyCode.ToUpper());
                 decimal cost = amount * rate;
-                if (balances[username] < cost)
-                    return $"Error: Insufficient balance. Need {cost:F2} PLN, have {balances[username]:F2} PLN";
-                balances[username] -= cost;
-                if (!holdings[username].ContainsKey(currencyCode.ToUpper()))
-                    holdings[username][currencyCode.ToUpper()] = 0;
-                holdings[username][currencyCode.ToUpper()] += amount;
-                return $"Success: Bought {amount:F2} {currencyCode.ToUpper()} for {cost:F2} PLN\nNew PLN balance: {balances[username]:F2}";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    decimal balance;
+                    string getBalance = "SELECT Balance FROM Users WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(getBalance, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        object result = cmd.ExecuteScalar();
+                        if (result == null) return "Error: User not found.";
+                        balance = (decimal)result;
+                    }
+                    if (balance < cost)
+                        return $"Error: Insufficient balance. Need {cost:F2} PLN, have {balance:F2} PLN";
+                    string update = "UPDATE Users SET Balance = Balance - @cost WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(update, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@cost", cost);
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.ExecuteNonQuery();
+                    }
+                    string insert = "INSERT INTO Transactions (Username, Type, CurrencyCode, Amount, RateAtTime, PlnValue) VALUES (@u, 'BUY', @c, @a, @r, @pln)";
+                    using (SqlCommand cmd = new SqlCommand(insert, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.Parameters.AddWithValue("@c", currencyCode.ToUpper());
+                        cmd.Parameters.AddWithValue("@a", amount);
+                        cmd.Parameters.AddWithValue("@r", rate);
+                        cmd.Parameters.AddWithValue("@pln", cost);
+                        cmd.ExecuteNonQuery();
+                    }
+                    decimal newBalance = balance - cost;
+                    return $"Success: Bought {amount:F2} {currencyCode.ToUpper()} for {cost:F2} PLN\nNew balance: {newBalance:F2} PLN";
+                }
             }
-            catch { return $"Error: '{currencyCode}' is not a valid currency code."; }
+            catch (Exception ex) { return "Error: " + ex.Message; }
         }
 
         public string SellCurrency(string username, string currencyCode, decimal amount)
         {
-            if (!users.ContainsKey(username)) return "Error: User not found.";
-            string code = currencyCode.ToUpper();
-            if (!holdings[username].ContainsKey(code) || holdings[username][code] < amount)
-                return $"Error: Insufficient {code} holdings.";
             try
             {
-                decimal rate = GetRateFromNBP(code);
+                decimal rate = GetRateFromNBP(currencyCode.ToUpper());
                 decimal earned = amount * rate;
-                holdings[username][code] -= amount;
-                balances[username] += earned;
-                return $"Success: Sold {amount:F2} {code} for {earned:F2} PLN\nNew PLN balance: {balances[username]:F2}";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string update = "UPDATE Users SET Balance = Balance + @earned WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(update, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@earned", earned);
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.ExecuteNonQuery();
+                    }
+                    string insert = "INSERT INTO Transactions (Username, Type, CurrencyCode, Amount, RateAtTime, PlnValue) VALUES (@u, 'SELL', @c, @a, @r, @pln)";
+                    using (SqlCommand cmd = new SqlCommand(insert, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.Parameters.AddWithValue("@c", currencyCode.ToUpper());
+                        cmd.Parameters.AddWithValue("@a", amount);
+                        cmd.Parameters.AddWithValue("@r", rate);
+                        cmd.Parameters.AddWithValue("@pln", earned);
+                        cmd.ExecuteNonQuery();
+                    }
+                    string getBalance = "SELECT Balance FROM Users WHERE Username=@u";
+                    using (SqlCommand cmd = new SqlCommand(getBalance, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        decimal newBalance = (decimal)cmd.ExecuteScalar();
+                        return $"Success: Sold {amount:F2} {currencyCode.ToUpper()} for {earned:F2} PLN\nNew balance: {newBalance:F2} PLN";
+                    }
+                }
             }
-            catch { return $"Error: '{currencyCode}' is not a valid currency code."; }
+            catch (Exception ex) { return "Error: " + ex.Message; }
         }
     }
 }
