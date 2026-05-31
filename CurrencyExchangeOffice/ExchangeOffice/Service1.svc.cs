@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Net;
@@ -91,15 +90,13 @@ namespace ExchangeOffice
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string check = "SELECT COUNT(*) FROM Users WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(check, conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         if ((int)cmd.ExecuteScalar() > 0)
                             return $"Error: Username '{username}' is already taken.";
                     }
-                    string insert = "INSERT INTO Users (Username, Password, Balance) VALUES (@u, @p, 0)";
-                    using (SqlCommand cmd = new SqlCommand(insert, conn))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Users (Username, Password, Balance) VALUES (@u, @p, 0)", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         cmd.Parameters.AddWithValue("@p", password);
@@ -118,8 +115,7 @@ namespace ExchangeOffice
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT COUNT(*) FROM Users WHERE Username=@u AND Password=@p";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username=@u AND Password=@p", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         cmd.Parameters.AddWithValue("@p", password);
@@ -139,14 +135,12 @@ namespace ExchangeOffice
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "SELECT Balance FROM Users WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT Balance FROM Users WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         object result = cmd.ExecuteScalar();
                         if (result == null) return "Error: User not found.";
-                        decimal balance = (decimal)result;
-                        return $"PLN Balance: {balance:F2} PLN";
+                        return $"PLN Balance: {(decimal)result:F2} PLN";
                     }
                 }
             }
@@ -161,15 +155,13 @@ namespace ExchangeOffice
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "UPDATE Users SET Balance = Balance + @a WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Users SET Balance = Balance + @a WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@a", amount);
                         cmd.Parameters.AddWithValue("@u", username);
                         cmd.ExecuteNonQuery();
                     }
-                    string getBalance = "SELECT Balance FROM Users WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(getBalance, conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT Balance FROM Users WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         decimal newBalance = (decimal)cmd.ExecuteScalar();
@@ -190,8 +182,7 @@ namespace ExchangeOffice
                 {
                     conn.Open();
                     decimal balance;
-                    string getBalance = "SELECT Balance FROM Users WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(getBalance, conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT Balance FROM Users WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         object result = cmd.ExecuteScalar();
@@ -200,15 +191,13 @@ namespace ExchangeOffice
                     }
                     if (balance < cost)
                         return $"Error: Insufficient balance. Need {cost:F2} PLN, have {balance:F2} PLN";
-                    string update = "UPDATE Users SET Balance = Balance - @cost WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(update, conn))
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Users SET Balance = Balance - @cost WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@cost", cost);
                         cmd.Parameters.AddWithValue("@u", username);
                         cmd.ExecuteNonQuery();
                     }
-                    string insert = "INSERT INTO Transactions (Username, Type, CurrencyCode, Amount, RateAtTime, PlnValue) VALUES (@u, 'BUY', @c, @a, @r, @pln)";
-                    using (SqlCommand cmd = new SqlCommand(insert, conn))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Transactions (Username, Type, CurrencyCode, Amount, RateAtTime, PlnValue) VALUES (@u, 'BUY', @c, @a, @r, @pln)", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         cmd.Parameters.AddWithValue("@c", currencyCode.ToUpper());
@@ -217,8 +206,7 @@ namespace ExchangeOffice
                         cmd.Parameters.AddWithValue("@pln", cost);
                         cmd.ExecuteNonQuery();
                     }
-                    decimal newBalance = balance - cost;
-                    return $"Success: Bought {amount:F2} {currencyCode.ToUpper()} for {cost:F2} PLN\nNew balance: {newBalance:F2} PLN";
+                    return $"Success: Bought {amount:F2} {currencyCode.ToUpper()} for {cost:F2} PLN\nNew balance: {balance - cost:F2} PLN";
                 }
             }
             catch (Exception ex) { return "Error: " + ex.Message; }
@@ -233,15 +221,13 @@ namespace ExchangeOffice
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string update = "UPDATE Users SET Balance = Balance + @earned WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(update, conn))
+                    using (SqlCommand cmd = new SqlCommand("UPDATE Users SET Balance = Balance + @earned WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@earned", earned);
                         cmd.Parameters.AddWithValue("@u", username);
                         cmd.ExecuteNonQuery();
                     }
-                    string insert = "INSERT INTO Transactions (Username, Type, CurrencyCode, Amount, RateAtTime, PlnValue) VALUES (@u, 'SELL', @c, @a, @r, @pln)";
-                    using (SqlCommand cmd = new SqlCommand(insert, conn))
+                    using (SqlCommand cmd = new SqlCommand("INSERT INTO Transactions (Username, Type, CurrencyCode, Amount, RateAtTime, PlnValue) VALUES (@u, 'SELL', @c, @a, @r, @pln)", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         cmd.Parameters.AddWithValue("@c", currencyCode.ToUpper());
@@ -250,12 +236,46 @@ namespace ExchangeOffice
                         cmd.Parameters.AddWithValue("@pln", earned);
                         cmd.ExecuteNonQuery();
                     }
-                    string getBalance = "SELECT Balance FROM Users WHERE Username=@u";
-                    using (SqlCommand cmd = new SqlCommand(getBalance, conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT Balance FROM Users WHERE Username=@u", conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
                         decimal newBalance = (decimal)cmd.ExecuteScalar();
                         return $"Success: Sold {amount:F2} {currencyCode.ToUpper()} for {earned:F2} PLN\nNew balance: {newBalance:F2} PLN";
+                    }
+                }
+            }
+            catch (Exception ex) { return "Error: " + ex.Message; }
+        }
+
+        public string GetTransactionHistory(string username)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Type, CurrencyCode, Amount, RateAtTime, PlnValue, Date FROM Transactions WHERE Username=@u ORDER BY Date DESC";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.HasRows) return "No transactions found.";
+                            StringBuilder result = new StringBuilder();
+                            result.AppendLine($"Transaction History for {username}:");
+                            result.AppendLine("=====================================");
+                            while (reader.Read())
+                            {
+                                string type = reader["Type"].ToString();
+                                string code = reader["CurrencyCode"].ToString();
+                                decimal amount = (decimal)reader["Amount"];
+                                decimal rate = (decimal)reader["RateAtTime"];
+                                decimal pln = (decimal)reader["PlnValue"];
+                                DateTime date = (DateTime)reader["Date"];
+                                result.AppendLine($"{date:yyyy-MM-dd HH:mm} | {type} | {amount:F2} {code} | Rate: {rate:F4} | PLN: {pln:F2}");
+                            }
+                            return result.ToString();
+                        }
                     }
                 }
             }

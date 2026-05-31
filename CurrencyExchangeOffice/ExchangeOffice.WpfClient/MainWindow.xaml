@@ -27,7 +27,8 @@
                 <PasswordBox x:Name="txtPassword" Width="100" Margin="0,0,5,0"/>
                 <Button Content="Register" Click="Register_Click" Padding="8,3" Margin="0,0,5,0"/>
                 <Button Content="Login" Click="Login_Click" Padding="8,3" Margin="0,0,5,0"/>
-                <Button Content="Balance" Click="Balance_Click" Padding="8,3"/>
+                <Button Content="Balance" Click="Balance_Click" Padding="8,3" Margin="0,0,5,0"/>
+                <Button Content="History" Click="History_Click" Padding="8,3"/>
             </StackPanel>
         </GroupBox>
 

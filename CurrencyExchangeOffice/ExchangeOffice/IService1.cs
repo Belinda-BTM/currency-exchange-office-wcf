@@ -31,5 +31,8 @@ namespace ExchangeOffice
 
         [OperationContract]
         string SellCurrency(string username, string currencyCode, decimal amount);
+        
+        [OperationContract]
+        string GetTransactionHistory(string username);
     }
 }

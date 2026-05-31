@@ -68,6 +68,12 @@ namespace ExchangeOffice.WpfClient.ExchangeServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SellCurrency", ReplyAction="http://tempuri.org/IService1/SellCurrencyResponse")]
         System.Threading.Tasks.Task<string> SellCurrencyAsync(string username, string currencyCode, decimal amount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetTransactionHistory", ReplyAction="http://tempuri.org/IService1/GetTransactionHistoryResponse")]
+        string GetTransactionHistory(string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetTransactionHistory", ReplyAction="http://tempuri.org/IService1/GetTransactionHistoryResponse")]
+        System.Threading.Tasks.Task<string> GetTransactionHistoryAsync(string username);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -167,6 +173,14 @@ namespace ExchangeOffice.WpfClient.ExchangeServiceReference {
         
         public System.Threading.Tasks.Task<string> SellCurrencyAsync(string username, string currencyCode, decimal amount) {
             return base.Channel.SellCurrencyAsync(username, currencyCode, amount);
+        }
+        
+        public string GetTransactionHistory(string username) {
+            return base.Channel.GetTransactionHistory(username);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetTransactionHistoryAsync(string username) {
+            return base.Channel.GetTransactionHistoryAsync(username);
         }
     }
 }

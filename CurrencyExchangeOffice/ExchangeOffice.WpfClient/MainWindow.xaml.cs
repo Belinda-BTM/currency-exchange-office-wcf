@@ -47,6 +47,17 @@ namespace ExchangeOffice.WpfClient
             catch (Exception ex) { txtResults.Text = "Error: " + ex.Message; }
         }
 
+        private void History_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(loggedInUser))
+                { txtResults.Text = "Please login first."; return; }
+                txtResults.Text = client.GetTransactionHistory(loggedInUser);
+            }
+            catch (Exception ex) { txtResults.Text = "Error: " + ex.Message; }
+        }
+
         private void TopUp_Click(object sender, RoutedEventArgs e)
         {
             try

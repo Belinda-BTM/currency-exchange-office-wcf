@@ -60,6 +60,12 @@
   <wsdl:message name="IService1_SellCurrency_OutputMessage">
     <wsdl:part name="parameters" element="tns:SellCurrencyResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_GetTransactionHistory_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTransactionHistory" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetTransactionHistory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTransactionHistoryResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="GetExchangeRate">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetExchangeRate" message="tns:IService1_GetExchangeRate_InputMessage" />
@@ -96,6 +102,10 @@
     <wsdl:operation name="SellCurrency">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/SellCurrency" message="tns:IService1_SellCurrency_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/SellCurrencyResponse" message="tns:IService1_SellCurrency_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTransactionHistory">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetTransactionHistory" message="tns:IService1_GetTransactionHistory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetTransactionHistoryResponse" message="tns:IService1_GetTransactionHistory_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -174,6 +184,15 @@
     </wsdl:operation>
     <wsdl:operation name="SellCurrency">
       <soap:operation soapAction="http://tempuri.org/IService1/SellCurrency" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransactionHistory">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetTransactionHistory" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
