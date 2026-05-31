@@ -14,6 +14,32 @@ namespace ExchangeOffice.WpfClient
             client = new Service1Client();
         }
 
+        private void Register_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string result = client.RegisterUser(txtUsername.Text, txtPassword.Password);
+                txtResults.Text = result;
+            }
+            catch (Exception ex)
+            {
+                txtResults.Text = "Error: " + ex.Message;
+            }
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string result = client.LoginUser(txtUsername.Text, txtPassword.Password);
+                txtResults.Text = result;
+            }
+            catch (Exception ex)
+            {
+                txtResults.Text = "Error: " + ex.Message;
+            }
+        }
+
         private void GetRate_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -24,8 +50,7 @@ namespace ExchangeOffice.WpfClient
                     txtResults.Text = "Please enter a currency code.";
                     return;
                 }
-                string result = client.GetExchangeRate(code);
-                txtResults.Text = result;
+                txtResults.Text = client.GetExchangeRate(code);
             }
             catch (Exception ex)
             {
@@ -40,7 +65,6 @@ namespace ExchangeOffice.WpfClient
                 string from = txtFromCurrency.Text.Trim().ToUpper();
                 string to = txtToCurrency.Text.Trim().ToUpper();
                 decimal amount = decimal.Parse(txtAmount.Text.Trim());
-
                 decimal result = client.CalculateExchange(from, to, amount);
 
                 if (result == -1)

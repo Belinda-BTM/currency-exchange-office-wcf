@@ -6,17 +6,17 @@
       <xsd:import schemaLocation="http://localhost:59841/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IService1_CalculateExchange_InputMessage">
-    <wsdl:part name="parameters" element="tns:CalculateExchange" />
-  </wsdl:message>
-  <wsdl:message name="IService1_CalculateExchange_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CalculateExchangeResponse" />
-  </wsdl:message>
   <wsdl:message name="IService1_GetExchangeRate_InputMessage">
     <wsdl:part name="parameters" element="tns:GetExchangeRate" />
   </wsdl:message>
   <wsdl:message name="IService1_GetExchangeRate_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetExchangeRateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_CalculateExchange_InputMessage">
+    <wsdl:part name="parameters" element="tns:CalculateExchange" />
+  </wsdl:message>
+  <wsdl:message name="IService1_CalculateExchange_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CalculateExchangeResponse" />
   </wsdl:message>
   <wsdl:message name="IService1_GetAvailableCurrencies_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAvailableCurrencies" />
@@ -24,31 +24,42 @@
   <wsdl:message name="IService1_GetAvailableCurrencies_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAvailableCurrenciesResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_RegisterUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterUser" />
+  </wsdl:message>
+  <wsdl:message name="IService1_RegisterUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_LoginUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoginUser" />
+  </wsdl:message>
+  <wsdl:message name="IService1_LoginUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginUserResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
-    <wsdl:operation name="CalculateExchange">
-      <wsdl:input wsaw:Action="http://tempuri.org/IService1/CalculateExchange" message="tns:IService1_CalculateExchange_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IService1/CalculateExchangeResponse" message="tns:IService1_CalculateExchange_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="GetExchangeRate">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetExchangeRate" message="tns:IService1_GetExchangeRate_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetExchangeRateResponse" message="tns:IService1_GetExchangeRate_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CalculateExchange">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/CalculateExchange" message="tns:IService1_CalculateExchange_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/CalculateExchangeResponse" message="tns:IService1_CalculateExchange_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAvailableCurrencies">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetAvailableCurrencies" message="tns:IService1_GetAvailableCurrencies_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetAvailableCurrenciesResponse" message="tns:IService1_GetAvailableCurrencies_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="RegisterUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/RegisterUser" message="tns:IService1_RegisterUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/RegisterUserResponse" message="tns:IService1_RegisterUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/LoginUser" message="tns:IService1_LoginUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/LoginUserResponse" message="tns:IService1_LoginUser_OutputMessage" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="CalculateExchange">
-      <soap:operation soapAction="http://tempuri.org/IService1/CalculateExchange" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="GetExchangeRate">
       <soap:operation soapAction="http://tempuri.org/IService1/GetExchangeRate" style="document" />
       <wsdl:input>
@@ -58,8 +69,35 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="CalculateExchange">
+      <soap:operation soapAction="http://tempuri.org/IService1/CalculateExchange" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetAvailableCurrencies">
       <soap:operation soapAction="http://tempuri.org/IService1/GetAvailableCurrencies" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterUser">
+      <soap:operation soapAction="http://tempuri.org/IService1/RegisterUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginUser">
+      <soap:operation soapAction="http://tempuri.org/IService1/LoginUser" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

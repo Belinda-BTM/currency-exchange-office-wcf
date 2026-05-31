@@ -15,23 +15,35 @@ namespace ExchangeOffice.WpfClient.ExchangeServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ExchangeServiceReference.IService1")]
     public interface IService1 {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CalculateExchange", ReplyAction="http://tempuri.org/IService1/CalculateExchangeResponse")]
-        decimal CalculateExchange(string fromCurrency, string toCurrency, decimal amount);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CalculateExchange", ReplyAction="http://tempuri.org/IService1/CalculateExchangeResponse")]
-        System.Threading.Tasks.Task<decimal> CalculateExchangeAsync(string fromCurrency, string toCurrency, decimal amount);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetExchangeRate", ReplyAction="http://tempuri.org/IService1/GetExchangeRateResponse")]
         string GetExchangeRate(string currencyCode);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetExchangeRate", ReplyAction="http://tempuri.org/IService1/GetExchangeRateResponse")]
         System.Threading.Tasks.Task<string> GetExchangeRateAsync(string currencyCode);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CalculateExchange", ReplyAction="http://tempuri.org/IService1/CalculateExchangeResponse")]
+        decimal CalculateExchange(string fromCurrency, string toCurrency, decimal amount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CalculateExchange", ReplyAction="http://tempuri.org/IService1/CalculateExchangeResponse")]
+        System.Threading.Tasks.Task<decimal> CalculateExchangeAsync(string fromCurrency, string toCurrency, decimal amount);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAvailableCurrencies", ReplyAction="http://tempuri.org/IService1/GetAvailableCurrenciesResponse")]
         string GetAvailableCurrencies();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAvailableCurrencies", ReplyAction="http://tempuri.org/IService1/GetAvailableCurrenciesResponse")]
         System.Threading.Tasks.Task<string> GetAvailableCurrenciesAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RegisterUser", ReplyAction="http://tempuri.org/IService1/RegisterUserResponse")]
+        string RegisterUser(string username, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RegisterUser", ReplyAction="http://tempuri.org/IService1/RegisterUserResponse")]
+        System.Threading.Tasks.Task<string> RegisterUserAsync(string username, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/LoginUser", ReplyAction="http://tempuri.org/IService1/LoginUserResponse")]
+        string LoginUser(string username, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/LoginUser", ReplyAction="http://tempuri.org/IService1/LoginUserResponse")]
+        System.Threading.Tasks.Task<string> LoginUserAsync(string username, string password);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -61,14 +73,6 @@ namespace ExchangeOffice.WpfClient.ExchangeServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public decimal CalculateExchange(string fromCurrency, string toCurrency, decimal amount) {
-            return base.Channel.CalculateExchange(fromCurrency, toCurrency, amount);
-        }
-        
-        public System.Threading.Tasks.Task<decimal> CalculateExchangeAsync(string fromCurrency, string toCurrency, decimal amount) {
-            return base.Channel.CalculateExchangeAsync(fromCurrency, toCurrency, amount);
-        }
-        
         public string GetExchangeRate(string currencyCode) {
             return base.Channel.GetExchangeRate(currencyCode);
         }
@@ -77,12 +81,36 @@ namespace ExchangeOffice.WpfClient.ExchangeServiceReference {
             return base.Channel.GetExchangeRateAsync(currencyCode);
         }
         
+        public decimal CalculateExchange(string fromCurrency, string toCurrency, decimal amount) {
+            return base.Channel.CalculateExchange(fromCurrency, toCurrency, amount);
+        }
+        
+        public System.Threading.Tasks.Task<decimal> CalculateExchangeAsync(string fromCurrency, string toCurrency, decimal amount) {
+            return base.Channel.CalculateExchangeAsync(fromCurrency, toCurrency, amount);
+        }
+        
         public string GetAvailableCurrencies() {
             return base.Channel.GetAvailableCurrencies();
         }
         
         public System.Threading.Tasks.Task<string> GetAvailableCurrenciesAsync() {
             return base.Channel.GetAvailableCurrenciesAsync();
+        }
+        
+        public string RegisterUser(string username, string password) {
+            return base.Channel.RegisterUser(username, password);
+        }
+        
+        public System.Threading.Tasks.Task<string> RegisterUserAsync(string username, string password) {
+            return base.Channel.RegisterUserAsync(username, password);
+        }
+        
+        public string LoginUser(string username, string password) {
+            return base.Channel.LoginUser(username, password);
+        }
+        
+        public System.Threading.Tasks.Task<string> LoginUserAsync(string username, string password) {
+            return base.Channel.LoginUserAsync(username, password);
         }
     }
 }
