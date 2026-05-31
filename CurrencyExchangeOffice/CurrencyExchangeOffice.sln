@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab2.ConsoleClient", "Lab2.
 		{D86EA7CC-DDA4-40AB-A349-33C9F92BE51A} = {D86EA7CC-DDA4-40AB-A349-33C9F92BE51A}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeOffice", "ExchangeOffice\ExchangeOffice.csproj", "{31A09662-E019-4419-90F6-DF1F224178E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00CE4405-99E1-4F77-BA80-DB9ED2D549F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A09662-E019-4419-90F6-DF1F224178E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A09662-E019-4419-90F6-DF1F224178E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A09662-E019-4419-90F6-DF1F224178E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A09662-E019-4419-90F6-DF1F224178E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
