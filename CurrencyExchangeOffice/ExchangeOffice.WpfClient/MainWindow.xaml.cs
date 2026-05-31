@@ -82,6 +82,15 @@ namespace ExchangeOffice.WpfClient
             catch (Exception ex) { txtResults.Text = "Error: " + ex.Message; }
         }
 
+        private void AllCurrencies_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                txtResults.Text = client.GetAvailableCurrencies();
+            }
+            catch (Exception ex) { txtResults.Text = "Error: " + ex.Message; }
+        }
+
         private void Calculate_Click(object sender, RoutedEventArgs e)
         {
             try
