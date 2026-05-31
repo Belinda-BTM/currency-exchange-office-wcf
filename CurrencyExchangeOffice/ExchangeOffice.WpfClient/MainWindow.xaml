@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Currency Exchange Office" Height="600" Width="650">
+        Title="Currency Exchange Office" Height="700" Width="650">
     <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -17,26 +19,35 @@
         <TextBlock Grid.Row="0" Text="Currency Exchange Office"
                    FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
 
-        <GroupBox Grid.Row="1" Header="User Account" Margin="0,0,0,10">
+        <GroupBox Grid.Row="1" Header="User Account" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Username:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBox x:Name="txtUsername" Width="100" Margin="0,0,5,0"/>
                 <TextBlock Text="Password:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <PasswordBox x:Name="txtPassword" Width="100" Margin="0,0,5,0"/>
-                <Button Content="Register" Click="Register_Click" Padding="10,3" Margin="0,0,5,0"/>
-                <Button Content="Login" Click="Login_Click" Padding="10,3"/>
+                <Button Content="Register" Click="Register_Click" Padding="8,3" Margin="0,0,5,0"/>
+                <Button Content="Login" Click="Login_Click" Padding="8,3" Margin="0,0,5,0"/>
+                <Button Content="Balance" Click="Balance_Click" Padding="8,3"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Row="2" Header="Check Exchange Rate" Margin="0,0,0,10">
+        <GroupBox Grid.Row="2" Header="Top Up Account (PLN)" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Amount (PLN):" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <TextBox x:Name="txtTopUp" Width="100" Margin="0,0,5,0"/>
+                <Button Content="Top Up" Click="TopUp_Click" Padding="8,3"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="3" Header="Check Exchange Rate" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Currency Code:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBox x:Name="txtCurrencyCode" Width="80" Margin="0,0,5,0"/>
-                <Button Content="Get Rate" Click="GetRate_Click" Padding="10,3"/>
+                <Button Content="Get Rate" Click="GetRate_Click" Padding="8,3"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Row="3" Header="Calculate Exchange" Margin="0,0,0,10">
+        <GroupBox Grid.Row="4" Header="Calculate Exchange" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="From:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBox x:Name="txtFromCurrency" Width="60" Margin="0,0,5,0"/>
@@ -44,11 +55,22 @@
                 <TextBox x:Name="txtToCurrency" Width="60" Margin="0,0,5,0"/>
                 <TextBlock Text="Amount:" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <TextBox x:Name="txtAmount" Width="80" Margin="0,0,5,0"/>
-                <Button Content="Calculate" Click="Calculate_Click" Padding="10,3"/>
+                <Button Content="Calculate" Click="Calculate_Click" Padding="8,3"/>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Grid.Row="4" Header="Results">
+        <GroupBox Grid.Row="5" Header="Buy / Sell Currency" Margin="0,0,0,5">
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Text="Currency:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <TextBox x:Name="txtTradeCurrency" Width="70" Margin="0,0,5,0"/>
+                <TextBlock Text="Amount:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                <TextBox x:Name="txtTradeAmount" Width="80" Margin="0,0,5,0"/>
+                <Button Content="Buy" Click="Buy_Click" Padding="8,3" Margin="0,0,5,0"/>
+                <Button Content="Sell" Click="Sell_Click" Padding="8,3"/>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="6" Header="Results">
             <TextBox x:Name="txtResults" IsReadOnly="True"
                      TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                      Margin="5"/>

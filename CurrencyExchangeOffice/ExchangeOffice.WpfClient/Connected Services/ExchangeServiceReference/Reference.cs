@@ -44,6 +44,30 @@ namespace ExchangeOffice.WpfClient.ExchangeServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/LoginUser", ReplyAction="http://tempuri.org/IService1/LoginUserResponse")]
         System.Threading.Tasks.Task<string> LoginUserAsync(string username, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetBalance", ReplyAction="http://tempuri.org/IService1/GetBalanceResponse")]
+        string GetBalance(string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetBalance", ReplyAction="http://tempuri.org/IService1/GetBalanceResponse")]
+        System.Threading.Tasks.Task<string> GetBalanceAsync(string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/TopUpAccount", ReplyAction="http://tempuri.org/IService1/TopUpAccountResponse")]
+        string TopUpAccount(string username, decimal amount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/TopUpAccount", ReplyAction="http://tempuri.org/IService1/TopUpAccountResponse")]
+        System.Threading.Tasks.Task<string> TopUpAccountAsync(string username, decimal amount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/BuyCurrency", ReplyAction="http://tempuri.org/IService1/BuyCurrencyResponse")]
+        string BuyCurrency(string username, string currencyCode, decimal amount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/BuyCurrency", ReplyAction="http://tempuri.org/IService1/BuyCurrencyResponse")]
+        System.Threading.Tasks.Task<string> BuyCurrencyAsync(string username, string currencyCode, decimal amount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SellCurrency", ReplyAction="http://tempuri.org/IService1/SellCurrencyResponse")]
+        string SellCurrency(string username, string currencyCode, decimal amount);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SellCurrency", ReplyAction="http://tempuri.org/IService1/SellCurrencyResponse")]
+        System.Threading.Tasks.Task<string> SellCurrencyAsync(string username, string currencyCode, decimal amount);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -111,6 +135,38 @@ namespace ExchangeOffice.WpfClient.ExchangeServiceReference {
         
         public System.Threading.Tasks.Task<string> LoginUserAsync(string username, string password) {
             return base.Channel.LoginUserAsync(username, password);
+        }
+        
+        public string GetBalance(string username) {
+            return base.Channel.GetBalance(username);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetBalanceAsync(string username) {
+            return base.Channel.GetBalanceAsync(username);
+        }
+        
+        public string TopUpAccount(string username, decimal amount) {
+            return base.Channel.TopUpAccount(username, amount);
+        }
+        
+        public System.Threading.Tasks.Task<string> TopUpAccountAsync(string username, decimal amount) {
+            return base.Channel.TopUpAccountAsync(username, amount);
+        }
+        
+        public string BuyCurrency(string username, string currencyCode, decimal amount) {
+            return base.Channel.BuyCurrency(username, currencyCode, amount);
+        }
+        
+        public System.Threading.Tasks.Task<string> BuyCurrencyAsync(string username, string currencyCode, decimal amount) {
+            return base.Channel.BuyCurrencyAsync(username, currencyCode, amount);
+        }
+        
+        public string SellCurrency(string username, string currencyCode, decimal amount) {
+            return base.Channel.SellCurrency(username, currencyCode, amount);
+        }
+        
+        public System.Threading.Tasks.Task<string> SellCurrencyAsync(string username, string currencyCode, decimal amount) {
+            return base.Channel.SellCurrencyAsync(username, currencyCode, amount);
         }
     }
 }
